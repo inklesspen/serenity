@@ -65,6 +65,8 @@ dashmap = { version = "6.1.0", features = ["serde"], optional = true }
 parking_lot = { version = "0.12.5" }
 ed25519-dalek = { version = "2.2.0", optional = true }
 typesize = { version = "0.1.14", optional = true, features = ["url", "time", "serde_json", "secrecy", "parking_lot", "nonmax"] }
+# We don't need any of the timezone support, since we'll only be using the Timestamp type.
+jiff = { version = "0.2.20", optional = true, features = ["alloc", "perf-inline", "serde", "std"], default-features = false }
 # serde feature only allows for serialisation,
 # Serenity workspace crates
 serenity-voice-model = { version = "0.2.1", path = "./voice-model", optional = true }
@@ -123,6 +125,8 @@ tokio_task_builder = ["tokio/tracing"]
 interactions_endpoint = ["ed25519-dalek"]
 # Uses chrono for Timestamp, instead of time
 chrono = ["dep:chrono", "typesize?/chrono"]
+# Uses jiff for Timestamp, instead of time (or chrono)
+jiff = ["dep:jiff"]
 
 # This enables all parts of the serenity codebase
 # (Note: all feature-gated APIs to be documented should have their features listed here!)
