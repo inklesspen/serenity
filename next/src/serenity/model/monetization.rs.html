@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/monetization.rs`."><title>monetization.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (47611e160 2026-02-12)" data-channel="nightly" data-search-js="search-fb33671b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-f9617a14.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-12f88f4f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><h1><div class="sub-heading">serenity/model/</div>monetization.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/monetization.rs`."><title>monetization.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (a423f68a0 2026-02-13)" data-channel="nightly" data-search-js="search-fb33671b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-f9617a14.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-12f88f4f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><h1><div class="sub-heading">serenity/model/</div>monetization.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 <a href=#2 id=2 data-nosnippet>2</a></span><span class="kw">use </span><span class="kw">crate</span>::builder::GetEntitlements;
 <a href=#3 id=3 data-nosnippet>3</a><span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 <a href=#4 id=4 data-nosnippet>4</a></span><span class="kw">use </span><span class="kw">crate</span>::http::Http;
@@ -6,7 +6,7 @@
 <a href=#6 id=6 data-nosnippet>6</a>
 <a href=#7 id=7 data-nosnippet>7</a><span class="doccomment">/// A premium offering that can be made available to an application's users and guilds.
 <a href=#8 id=8 data-nosnippet>8</a>///
-<a href=#9 id=9 data-nosnippet>9</a>/// [Discord docs](https://discord.com/developers/docs/monetization/skus#sku-object).
+<a href=#9 id=9 data-nosnippet>9</a>/// [Discord docs](https://docs.discord.com/developers/resources/sku#sku-object).
 <a href=#10 id=10 data-nosnippet>10</a></span><span class="attr">#[derive(Clone, Debug, Serialize, Deserialize)]
 <a href=#11 id=11 data-nosnippet>11</a></span><span class="kw">pub struct </span>Sku {
 <a href=#12 id=12 data-nosnippet>12</a>    <span class="doccomment">/// The unique ID of the SKU.
@@ -28,7 +28,7 @@
 <a href=#28 id=28 data-nosnippet>28</a>    <span class="doccomment">/// Returns the store url for this SKU. If included in a message, will render as a rich embed.
 <a href=#29 id=29 data-nosnippet>29</a>    /// See the [Discord docs] for details.
 <a href=#30 id=30 data-nosnippet>30</a>    ///
-<a href=#31 id=31 data-nosnippet>31</a>    /// [Discord docs]: https://discord.com/developers/docs/monetization/skus#linking-to-your-skus
+<a href=#31 id=31 data-nosnippet>31</a>    /// [Discord docs]: https://docs.discord.com/developers/monetization/managing-skus#linking-to-a-specific-sku
 <a href=#32 id=32 data-nosnippet>32</a>    </span><span class="attr">#[must_use]
 <a href=#33 id=33 data-nosnippet>33</a>    </span><span class="kw">pub fn </span>url(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
 <a href=#34 id=34 data-nosnippet>34</a>        <span class="macro">format!</span>(
@@ -41,7 +41,7 @@
 <a href=#41 id=41 data-nosnippet>41</a><span class="macro">enum_number!</span> {
 <a href=#42 id=42 data-nosnippet>42</a>    <span class="doccomment">/// Differentiates between SKU classes.
 <a href=#43 id=43 data-nosnippet>43</a>    ///
-<a href=#44 id=44 data-nosnippet>44</a>    /// [Discord docs](https://discord.com/developers/docs/monetization/skus#sku-object-sku-types).
+<a href=#44 id=44 data-nosnippet>44</a>    /// [Discord docs](https://docs.discord.com/developers/resources/sku#sku-object-sku-types).
 <a href=#45 id=45 data-nosnippet>45</a>    </span><span class="attr">#[derive(Clone, Debug, Serialize, Deserialize)]
 <a href=#46 id=46 data-nosnippet>46</a>    #[non_exhaustive]
 <a href=#47 id=47 data-nosnippet>47</a>    </span><span class="kw">pub enum </span>SkuKind {
@@ -60,7 +60,7 @@
 <a href=#60 id=60 data-nosnippet>60</a><span class="macro">bitflags!</span> {
 <a href=#61 id=61 data-nosnippet>61</a>    <span class="doccomment">/// Differentates between user and server subscriptions.
 <a href=#62 id=62 data-nosnippet>62</a>    ///
-<a href=#63 id=63 data-nosnippet>63</a>    /// [Discord docs](https://discord.com/developers/docs/monetization/skus#sku-object-sku-flags).
+<a href=#63 id=63 data-nosnippet>63</a>    /// [Discord docs](https://docs.discord.com/developers/resources/sku#sku-object-sku-flags).
 <a href=#64 id=64 data-nosnippet>64</a>    </span><span class="attr">#[derive(Copy, Clone, Debug, Eq, Hash, PartialEq)]
 <a href=#65 id=65 data-nosnippet>65</a>    </span><span class="kw">pub struct </span>SkuFlags: u64 {
 <a href=#66 id=66 data-nosnippet>66</a>        <span class="doccomment">/// SKU is available for purchase.
@@ -76,7 +76,7 @@
 <a href=#76 id=76 data-nosnippet>76</a>
 <a href=#77 id=77 data-nosnippet>77</a><span class="doccomment">/// Represents that a user or guild has access to a premium offering in the application.
 <a href=#78 id=78 data-nosnippet>78</a>///
-<a href=#79 id=79 data-nosnippet>79</a>/// [Discord docs](https://discord.com/developers/docs/monetization/entitlements#entitlement-object-entitlement-structure).
+<a href=#79 id=79 data-nosnippet>79</a>/// [Discord docs](https://docs.discord.com/developers/resources/entitlement#entitlement-object-entitlement-structure).
 <a href=#80 id=80 data-nosnippet>80</a></span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
 <a href=#81 id=81 data-nosnippet>81</a>#[derive(Clone, Debug, Serialize, Deserialize)]
 <a href=#82 id=82 data-nosnippet>82</a></span><span class="kw">pub struct </span>Entitlement {
@@ -145,7 +145,7 @@
 <a href=#145 id=145 data-nosnippet>145</a><span class="macro">enum_number!</span> {
 <a href=#146 id=146 data-nosnippet>146</a>    <span class="doccomment">/// Differentiates between Entitlement types.
 <a href=#147 id=147 data-nosnippet>147</a>    ///
-<a href=#148 id=148 data-nosnippet>148</a>    /// [Discord docs](https://discord.com/developers/docs/monetization/entitlements#entitlement-object-entitlement-types).
+<a href=#148 id=148 data-nosnippet>148</a>    /// [Discord docs](https://docs.discord.com/developers/resources/entitlement#entitlement-object-entitlement-types).
 <a href=#149 id=149 data-nosnippet>149</a>    </span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
 <a href=#150 id=150 data-nosnippet>150</a>    #[derive(Clone, Debug, Serialize, Deserialize)]
 <a href=#151 id=151 data-nosnippet>151</a>    #[non_exhaustive]

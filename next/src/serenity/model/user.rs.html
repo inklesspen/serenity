@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/user.rs`."><title>user.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (47611e160 2026-02-12)" data-channel="nightly" data-search-js="search-fb33671b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-f9617a14.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-12f88f4f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><h1><div class="sub-heading">serenity/model/</div>user.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="doccomment">//! User information-related models.
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/user.rs`."><title>user.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (a423f68a0 2026-02-13)" data-channel="nightly" data-search-js="search-fb33671b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-f9617a14.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-12f88f4f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><h1><div class="sub-heading">serenity/model/</div>user.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="doccomment">//! User information-related models.
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>std::fmt;
 <a href=#4 id=4 data-nosnippet>4</a><span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
@@ -115,7 +115,7 @@
 <a href=#115 id=115 data-nosnippet>115</a>
 <a href=#116 id=116 data-nosnippet>116</a><span class="doccomment">/// Information about the current user.
 <a href=#117 id=117 data-nosnippet>117</a>///
-<a href=#118 id=118 data-nosnippet>118</a>/// [Discord docs](https://discord.com/developers/docs/resources/user#user-object).
+<a href=#118 id=118 data-nosnippet>118</a>/// [Discord docs](https://docs.discord.com/developers/resources/user#user-object).
 <a href=#119 id=119 data-nosnippet>119</a></span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
 <a href=#120 id=120 data-nosnippet>120</a>#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 <a href=#121 id=121 data-nosnippet>121</a>#[serde(transparent)]
@@ -180,7 +180,7 @@
 <a href=#180 id=180 data-nosnippet>180</a>
 <a href=#181 id=181 data-nosnippet>181</a><span class="doccomment">/// The representation of a user's status.
 <a href=#182 id=182 data-nosnippet>182</a>///
-<a href=#183 id=183 data-nosnippet>183</a>/// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#update-presence-status-types).
+<a href=#183 id=183 data-nosnippet>183</a>/// [Discord docs](https://docs.discord.com/developers/events/gateway-events#update-presence-status-types).
 <a href=#184 id=184 data-nosnippet>184</a></span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
 <a href=#185 id=185 data-nosnippet>185</a>#[derive(
 <a href=#186 id=186 data-nosnippet>186</a>    Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize,
@@ -215,8 +215,8 @@
 <a href=#215 id=215 data-nosnippet>215</a>
 <a href=#216 id=216 data-nosnippet>216</a><span class="doccomment">/// Information about a user.
 <a href=#217 id=217 data-nosnippet>217</a>///
-<a href=#218 id=218 data-nosnippet>218</a>/// [Discord docs](https://discord.com/developers/docs/resources/user#user-object), existence of
-<a href=#219 id=219 data-nosnippet>219</a>/// additional partial member field documented [here](https://discord.com/developers/docs/topics/gateway-events#message-create).
+<a href=#218 id=218 data-nosnippet>218</a>/// [Discord docs](https://docs.discord.com/developers/resources/user#user-object), existence of
+<a href=#219 id=219 data-nosnippet>219</a>/// additional partial member field documented [here](https://docs.discord.com/developers/events/gateway-events#message-create).
 <a href=#220 id=220 data-nosnippet>220</a></span><span class="attr">#[bool_to_bitflags::bool_to_bitflags]
 <a href=#221 id=221 data-nosnippet>221</a>#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
 <a href=#222 id=222 data-nosnippet>222</a>#[derive(Clone, Debug, Default, PartialEq, Eq, Hash, serde::Deserialize, serde::Serialize)]
@@ -280,7 +280,7 @@
 <a href=#280 id=280 data-nosnippet>280</a>    </span><span class="kw">pub </span>public_flags: <span class="prelude-ty">Option</span>&lt;UserPublicFlags&gt;,
 <a href=#281 id=281 data-nosnippet>281</a>    <span class="doccomment">/// Only included in [`Message::mentions`] for messages from the gateway.
 <a href=#282 id=282 data-nosnippet>282</a>    ///
-<a href=#283 id=283 data-nosnippet>283</a>    /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#message-create-message-create-extra-fields).
+<a href=#283 id=283 data-nosnippet>283</a>    /// [Discord docs](https://docs.discord.com/developers/events/gateway-events#message-create-message-create-extra-fields).
 <a href=#284 id=284 data-nosnippet>284</a>    </span><span class="comment">// Box required to avoid infinitely recursive types
 <a href=#285 id=285 data-nosnippet>285</a>    </span><span class="kw">pub </span>member: <span class="prelude-ty">Option</span>&lt;Box&lt;PartialMember&gt;&gt;,
 <a href=#286 id=286 data-nosnippet>286</a>    <span class="doccomment">/// The primary guild and tag the user has active.
@@ -304,7 +304,7 @@
 <a href=#304 id=304 data-nosnippet>304</a>    <span class="doccomment">/// Premium types denote the level of premium a user has. Visit the [Nitro](https://discord.com/nitro)
 <a href=#305 id=305 data-nosnippet>305</a>    /// page to learn more about the premium plans Discord currently offers.
 <a href=#306 id=306 data-nosnippet>306</a>    ///
-<a href=#307 id=307 data-nosnippet>307</a>    /// [Discord docs](https://discord.com/developers/docs/resources/user#user-object-premium-types).
+<a href=#307 id=307 data-nosnippet>307</a>    /// [Discord docs](https://docs.discord.com/developers/resources/user#user-object-premium-types).
 <a href=#308 id=308 data-nosnippet>308</a>    </span><span class="attr">#[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
 <a href=#309 id=309 data-nosnippet>309</a>    #[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
 <a href=#310 id=310 data-nosnippet>310</a>    #[non_exhaustive]
@@ -320,7 +320,7 @@
 <a href=#320 id=320 data-nosnippet>320</a><span class="macro">bitflags!</span> {
 <a href=#321 id=321 data-nosnippet>321</a>    <span class="doccomment">/// User's public flags
 <a href=#322 id=322 data-nosnippet>322</a>    ///
-<a href=#323 id=323 data-nosnippet>323</a>    /// [Discord docs](https://discord.com/developers/docs/resources/user#user-object-user-flags).
+<a href=#323 id=323 data-nosnippet>323</a>    /// [Discord docs](https://docs.discord.com/developers/resources/user#user-object-user-flags).
 <a href=#324 id=324 data-nosnippet>324</a>    </span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
 <a href=#325 id=325 data-nosnippet>325</a>    #[derive(Copy, Clone, Default, Debug, Eq, Hash, PartialEq)]
 <a href=#326 id=326 data-nosnippet>326</a>    </span><span class="kw">pub struct </span>UserPublicFlags: u32 {
@@ -364,7 +364,7 @@
 <a href=#364 id=364 data-nosnippet>364</a>
 <a href=#365 id=365 data-nosnippet>365</a><span class="doccomment">/// User's Primary Guild object
 <a href=#366 id=366 data-nosnippet>366</a>///
-<a href=#367 id=367 data-nosnippet>367</a>/// [Discord docs](https://discord.com/developers/docs/resources/user#user-object-user-primary-guild)
+<a href=#367 id=367 data-nosnippet>367</a>/// [Discord docs](https://docs.discord.com/developers/resources/user#user-object-user-primary-guild)
 <a href=#368 id=368 data-nosnippet>368</a></span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
 <a href=#369 id=369 data-nosnippet>369</a>#[derive(Clone, Debug, Default, PartialEq, Eq, Hash, Deserialize, Serialize)]
 <a href=#370 id=370 data-nosnippet>370</a>#[non_exhaustive]
@@ -394,7 +394,7 @@
 <a href=#394 id=394 data-nosnippet>394</a>#[non_exhaustive]
 <a href=#395 id=395 data-nosnippet>395</a></span><span class="doccomment">/// The data for a [`User`]'s avatar decoration.
 <a href=#396 id=396 data-nosnippet>396</a>///
-<a href=#397 id=397 data-nosnippet>397</a>/// [Discord docs](https://discord.com/developers/docs/resources/user#avatar-decoration-data-object).
+<a href=#397 id=397 data-nosnippet>397</a>/// [Discord docs](https://docs.discord.com/developers/resources/user#avatar-decoration-data-object).
 <a href=#398 id=398 data-nosnippet>398</a></span><span class="kw">pub struct </span>AvatarDecorationData {
 <a href=#399 id=399 data-nosnippet>399</a>    <span class="doccomment">/// The avatar decoration hash
 <a href=#400 id=400 data-nosnippet>400</a>    </span><span class="kw">pub </span>asset: ImageHash,
@@ -413,7 +413,7 @@
 <a href=#413 id=413 data-nosnippet>413</a>
 <a href=#414 id=414 data-nosnippet>414</a><span class="doccomment">/// The collectibles the user has, excluding Avatar Decorations and Profile Effects.
 <a href=#415 id=415 data-nosnippet>415</a>///
-<a href=#416 id=416 data-nosnippet>416</a>/// [Discord docs](https://discord.com/developers/docs/resources/user#collectibles).
+<a href=#416 id=416 data-nosnippet>416</a>/// [Discord docs](https://docs.discord.com/developers/resources/user#collectibles).
 <a href=#417 id=417 data-nosnippet>417</a></span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
 <a href=#418 id=418 data-nosnippet>418</a>#[derive(Clone, Debug, PartialEq, Eq, Hash, Deserialize, Serialize)]
 <a href=#419 id=419 data-nosnippet>419</a>#[non_exhaustive]
@@ -424,7 +424,7 @@
 <a href=#424 id=424 data-nosnippet>424</a>
 <a href=#425 id=425 data-nosnippet>425</a><span class="doccomment">/// A nameplate, shown on the member list on official clients.
 <a href=#426 id=426 data-nosnippet>426</a>///
-<a href=#427 id=427 data-nosnippet>427</a>/// [Discord docs](https://discord.com/developers/docs/resources/user#nameplate-nameplate-structure).
+<a href=#427 id=427 data-nosnippet>427</a>/// [Discord docs](https://docs.discord.com/developers/resources/user#nameplate-nameplate-structure).
 <a href=#428 id=428 data-nosnippet>428</a></span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
 <a href=#429 id=429 data-nosnippet>429</a>#[derive(Clone, Debug, PartialEq, Eq, Hash, Deserialize, Serialize)]
 <a href=#430 id=430 data-nosnippet>430</a>#[non_exhaustive]
