@@ -238,6 +238,54 @@ pub struct WsClient {
 
 const TIMEOUT: Duration = Duration::from_millis(500);
 
+mod recv_json {
+    use crate::constants::Opcode;
+    use serde::{Deserialize, Serialize};
+    use serde_json::value::RawValue;
+    use tracing::trace;
+
+    #[derive(Deserialize)]
+    struct GatewayEventRaw<'a> {
+        op: Opcode,
+        #[serde(rename = "s")]
+        #[allow(dead_code)]
+        seq: Option<u64>,
+        #[serde(rename = "d")]
+        data: &'a RawValue,
+        #[serde(rename = "t")]
+        ty: Option<&'a str>,
+    }
+
+    #[derive(Serialize)]
+    struct Output<'a> {
+        #[serde(rename = "t")]
+        ty: Option<&'a str>,
+        #[serde(rename = "d")]
+        data: &'a RawValue,
+    }
+
+    pub(crate) fn log_if_msg(json_bytes: &[u8]) {
+        match serde_json::from_slice::<GatewayEventRaw>(json_bytes) {
+            Ok(GatewayEventRaw {
+                op: Opcode::Dispatch,
+                seq: _,
+                data,
+                ty:
+                    ty @ Some(
+                        "MESSAGE_CREATE"
+                        | "MESSAGE_UPDATE"
+                        | "MESSAGE_DELETE"
+                        | "MESSAGE_DELETE_BULK",
+                    ),
+            }) => {
+                let log_json = serde_json::to_string(&Output { ty, data }).unwrap();
+                trace!(message = log_json);
+            },
+            _ => {},
+        }
+    }
+}
+
 impl WsClient {
     pub(crate) async fn connect(url: Url, compression: TransportCompression) -> Result<Self> {
         let config = {
@@ -274,6 +322,8 @@ impl WsClient {
             },
             _ => return Ok(None),
         };
+
+        recv_json::log_if_msg(json_bytes);
 
         match serde_json::from_slice(json_bytes) {
             Ok(event) => Ok(Some(event)),
