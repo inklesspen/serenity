@@ -35,12 +35,12 @@ use std::str::FromStr;
 #[cfg(feature = "chrono")]
 pub use chrono::ParseError as InnerError;
 #[cfg(feature = "chrono")]
-use chrono::{DateTime, SecondsFormat, TimeZone, Utc};
+use chrono::{DateTime, SecondsFormat, SubsecRound, TimeZone, Utc};
 use serde::{Deserialize, Serialize};
 #[cfg(not(feature = "chrono"))]
 pub use time::error::Parse as InnerError;
 #[cfg(not(feature = "chrono"))]
-use time::{Duration, OffsetDateTime, format_description::well_known::Rfc3339, serde::rfc3339};
+use time::{Duration, OffsetDateTime, format_description::well_known::Rfc3339};
 
 /// Discord's epoch starts at "2015-01-01T00:00:00+00:00"
 const DISCORD_EPOCH: u64 = 1_420_070_400_000;
@@ -51,9 +51,11 @@ const MAX_DISCORD_ID_MILLIS: u64 = 5_818_116_911_103;
 #[cfg_attr(feature = "typesize", derive(typesize::derive::TypeSize))]
 #[serde(transparent)]
 pub struct Timestamp(
-    #[cfg(feature = "chrono")] DateTime<Utc>,
+    #[cfg(feature = "chrono")]
+    #[serde(with = "chrono_millis")]
+    DateTime<Utc>,
     #[cfg(not(feature = "chrono"))]
-    #[serde(with = "rfc3339")]
+    #[serde(with = "time_millis")]
     OffsetDateTime,
 );
 
@@ -84,9 +86,9 @@ impl Timestamp {
     #[must_use]
     pub fn now() -> Self {
         #[cfg(feature = "chrono")]
-        let x = Utc::now();
+        let x = Utc::now().trunc_subsecs(3);
         #[cfg(not(feature = "chrono"))]
-        let x = OffsetDateTime::now_utc();
+        let x = OffsetDateTime::now_utc().truncate_to_millisecond();
         Self(x)
     }
 
@@ -139,9 +141,13 @@ impl Timestamp {
     /// Returns `Err` if the string is not a valid RFC 3339 date and time string.
     pub fn parse(input: &str) -> Result<Timestamp, ParseError> {
         #[cfg(feature = "chrono")]
-        let x = DateTime::parse_from_rfc3339(input).map_err(ParseError)?.with_timezone(&Utc);
+        let x = DateTime::parse_from_rfc3339(input)
+            .map_err(ParseError)?
+            .with_timezone(&Utc)
+            .trunc_subsecs(3);
         #[cfg(not(feature = "chrono"))]
-        let x = OffsetDateTime::parse(input, &Rfc3339).map_err(ParseError)?;
+        let x =
+            OffsetDateTime::parse(input, &Rfc3339).map_err(ParseError)?.truncate_to_millisecond();
         Ok(Self(x))
     }
 
@@ -264,6 +270,46 @@ impl From<&Timestamp> for Timestamp {
     }
 }
 
+#[cfg(feature = "chrono")]
+mod chrono_millis {
+    use chrono::{DateTime, SubsecRound, Utc};
+    use serde::{Deserialize, Deserializer, Serialize, Serializer};
+
+    pub fn deserialize<'de, D>(deserializer: D) -> Result<DateTime<Utc>, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        Ok(DateTime::deserialize(deserializer)?.trunc_subsecs(3))
+    }
+
+    pub fn serialize<S>(datetime: &DateTime<Utc>, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        datetime.serialize(serializer)
+    }
+}
+
+#[cfg(not(feature = "chrono"))]
+mod time_millis {
+    use serde::{Deserializer, Serializer};
+    use time::{OffsetDateTime, serde::rfc3339};
+
+    pub fn deserialize<'de, D>(deserializer: D) -> Result<OffsetDateTime, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        Ok(rfc3339::deserialize(deserializer)?.truncate_to_millisecond())
+    }
+
+    pub fn serialize<S>(datetime: &OffsetDateTime, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        rfc3339::serialize(datetime, serializer)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::{DISCORD_EPOCH, MAX_DISCORD_ID_MILLIS, Timestamp, TimestampOutOfRange};
@@ -276,6 +322,36 @@ mod tests {
             assert_eq!(timestamp.to_string(), "2016-04-30T11:18:25.000Z");
         } else {
             assert_eq!(timestamp.to_string(), "2016-04-30T11:18:25Z");
+        }
+    }
+
+    #[test]
+    fn from_millis() {
+        let timestamp = Timestamp::from_millis(1462015105123).unwrap();
+        assert_eq!(timestamp.unix_timestamp(), 1462015105);
+        assert_eq!(timestamp.unix_timestamp_millis(), 1462015105123);
+        assert_eq!(timestamp.to_string(), "2016-04-30T11:18:25.123Z");
+    }
+
+    #[test]
+    fn deserialize_truncates_to_millis() {
+        let timestamp =
+            serde_json::from_value::<Timestamp>(serde_json::json!("2026-04-10T17:24:27.380330Z"))
+                .unwrap();
+        if cfg!(feature = "chrono") {
+            assert_eq!(timestamp.to_string(), "2026-04-10T17:24:27.380Z");
+        } else {
+            assert_eq!(timestamp.to_string(), "2026-04-10T17:24:27.38Z");
+        }
+    }
+
+    #[test]
+    fn parse_truncates_to_millis() {
+        let timestamp = Timestamp::parse("2026-04-10T17:24:27.380330Z").unwrap();
+        if cfg!(feature = "chrono") {
+            assert_eq!(timestamp.to_string(), "2026-04-10T17:24:27.380Z");
+        } else {
+            assert_eq!(timestamp.to_string(), "2026-04-10T17:24:27.38Z");
         }
     }
 
