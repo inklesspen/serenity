@@ -8,7 +8,7 @@ use serde::de::Error;
 use to_arraystring::ToArrayString;
 
 use super::prelude::*;
-use super::timestamp::TimestampOutOfRange;
+use super::timestamp::{DiscordIds, TimestampOutOfRange};
 
 macro_rules! newtype_display_impl {
     ($name:ident, |$this:ident| $inner:expr) => {
@@ -282,7 +282,7 @@ mod tests {
     fn test_created_at() {
         // The id is from discord's snowflake docs
         let id = GuildId::new(175928847299117063);
-        assert_eq!(id.created_at().unix_timestamp(), 1462015105);
+        assert_eq!(id.created_at().as_second(), 1462015105);
         assert_eq!(id.created_at().to_string(), "2016-04-30T11:18:25.796Z");
     }
 
